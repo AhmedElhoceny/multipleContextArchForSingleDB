@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuthModule\AuthModule.csproj" />
-    <ProjectReference Include="..\OrderModule\OrderModule.csproj" />
   </ItemGroup>
 
 </Project>

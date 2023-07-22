@@ -1,8 +1,6 @@
 using AuthModule.Configration;
 using AuthModule.Context;
 using Microsoft.EntityFrameworkCore;
-using OrderModule.Configration;
-using OrderModule.Context;
 using SharedConfilgrations.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,13 +16,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.LoadAuthDependencies();
 #endregion
 
-#region OrderConfigration
-builder.Services.LoadOrderDependencies();
-#endregion
+
 
 #region DataBaseConfig
 builder.Services.AddDbContext<AuthContextDB>(optionsAction: options => options.UseSqlServer(builder.Configuration.GetConnectionString("AuthDB")));
-builder.Services.AddDbContext<OrderContextDb>(optionsAction: options => options.UseSqlServer(builder.Configuration.GetConnectionString("OrdersDB")));
 builder.Services.AddDbContext<DBContext>(optionsAction: options => options.UseSqlServer(builder.Configuration.GetConnectionString("SAASDB")));
 #endregion
 

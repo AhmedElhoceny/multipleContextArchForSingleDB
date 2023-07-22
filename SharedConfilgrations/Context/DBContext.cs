@@ -1,6 +1,5 @@
 ﻿using AuthModule.Models;
 using Microsoft.EntityFrameworkCore;
-using OrderModule.Models;
 
 namespace SharedConfilgrations.Context
 {
@@ -17,9 +16,11 @@ namespace SharedConfilgrations.Context
 
         #region AuthModule
             public DbSet<User> Users { get; set; }
-        #endregion
-        #region OrdersModule
-            public DbSet<Order> Orders { get; set; }
+            public DbSet<Role> Roles { get; set; }
+            public DbSet<UserRole> userRoles { get; set; }
+            public DbSet<UserToken> userTokens { get; set; }
+            public DbSet<Permission> permissions { get; set; }
+            public DbSet<UserPermission> userPermissions { get; set; }
         #endregion
     }
 }

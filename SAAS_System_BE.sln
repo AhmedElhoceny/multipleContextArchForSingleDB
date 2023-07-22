@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAAS_System_BE", "SAAS_System_BE\SAAS_System_BE.csproj", "{0026DF42-E3F7-449C-85FD-DC4AE3E82CA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SAAS_System_BE", "SAAS_System_BE\SAAS_System_BE.csproj", "{0026DF42-E3F7-449C-85FD-DC4AE3E82CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedConfilgrations", "SharedConfilgrations\SharedConfilgrations.csproj", "{72849555-21D4-41C9-A9DD-254D2DD9E6C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedConfilgrations", "SharedConfilgrations\SharedConfilgrations.csproj", "{72849555-21D4-41C9-A9DD-254D2DD9E6C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{63E67656-26FA-475E-BE55-15569CC0D091}"
 EndProject
@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{B22ADAFD-62A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{257B4064-A823-476A-9456-B7DF4D48A9FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthModule", "AuthModule\AuthModule.csproj", "{94AEDE2F-0E9D-4CFC-BD16-7AFAEC069DA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthModule", "AuthModule\AuthModule.csproj", "{94AEDE2F-0E9D-4CFC-BD16-7AFAEC069DA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderModule", "OrderModule\OrderModule.csproj", "{6C261157-EBB0-465E-8468-0D619047BAC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedHelpers", "SharedHelpers\SharedHelpers.csproj", "{80FD41A3-7D07-497E-8353-02676A5AB926}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{94AEDE2F-0E9D-4CFC-BD16-7AFAEC069DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94AEDE2F-0E9D-4CFC-BD16-7AFAEC069DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94AEDE2F-0E9D-4CFC-BD16-7AFAEC069DA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C261157-EBB0-465E-8468-0D619047BAC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C261157-EBB0-465E-8468-0D619047BAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C261157-EBB0-465E-8468-0D619047BAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C261157-EBB0-465E-8468-0D619047BAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80FD41A3-7D07-497E-8353-02676A5AB926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80FD41A3-7D07-497E-8353-02676A5AB926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80FD41A3-7D07-497E-8353-02676A5AB926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80FD41A3-7D07-497E-8353-02676A5AB926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,7 +47,7 @@ Global
 		{0026DF42-E3F7-449C-85FD-DC4AE3E82CA9} = {B22ADAFD-62AE-4BD7-8B74-1C89E1493652}
 		{72849555-21D4-41C9-A9DD-254D2DD9E6C9} = {257B4064-A823-476A-9456-B7DF4D48A9FD}
 		{94AEDE2F-0E9D-4CFC-BD16-7AFAEC069DA0} = {63E67656-26FA-475E-BE55-15569CC0D091}
-		{6C261157-EBB0-465E-8468-0D619047BAC3} = {63E67656-26FA-475E-BE55-15569CC0D091}
+		{80FD41A3-7D07-497E-8353-02676A5AB926} = {257B4064-A823-476A-9456-B7DF4D48A9FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F73B2AD9-B2BC-411B-9BDB-0FAA32D6B2EB}
