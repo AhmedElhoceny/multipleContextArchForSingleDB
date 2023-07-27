@@ -12,8 +12,6 @@ namespace AuthModule.Models
     [Table("Auth_UserTokens")]
     public class UserToken:GeneralEntity
     {
-        [Key]
-        public int Id { get; set; }
         public int User_Id { get; set; }
         [ForeignKey(nameof(User_Id))]
         public User User { get; set; }

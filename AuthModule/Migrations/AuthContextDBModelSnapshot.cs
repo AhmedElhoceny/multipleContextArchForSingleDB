@@ -22,13 +22,16 @@ namespace AuthModule.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuthModule.Models.Permission", b =>
+            modelBuilder.Entity("SharedHelpers.Models.GeneralEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("CompId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
@@ -42,72 +45,86 @@ namespace AuthModule.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GeneralEntity");
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("AuthModule.Models.Company", b =>
+                {
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Auth_Companies");
+                });
+
+            modelBuilder.Entity("AuthModule.Models.Permission", b =>
+                {
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Auth_Permissions");
                 });
 
             modelBuilder.Entity("AuthModule.Models.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedBy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
 
                     b.ToTable("Auth_Roles");
                 });
 
             modelBuilder.Entity("AuthModule.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -116,20 +133,8 @@ namespace AuthModule.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsEmailConfirmaed")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedBy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -146,44 +151,18 @@ namespace AuthModule.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
                     b.ToTable("Auth_Users");
                 });
 
             modelBuilder.Entity("AuthModule.Models.UserPermission", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedBy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
 
                     b.Property<int>("Permission_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("User_Id")
                         .HasColumnType("int");
-
-                    b.HasKey("Id");
 
                     b.HasIndex("Permission_Id");
 
@@ -194,37 +173,13 @@ namespace AuthModule.Migrations
 
             modelBuilder.Entity("AuthModule.Models.UserRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedBy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
 
                     b.Property<int>("Role_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("User_Id")
                         .HasColumnType("int");
-
-                    b.HasKey("Id");
 
                     b.HasIndex("Role_Id");
 
@@ -235,29 +190,7 @@ namespace AuthModule.Migrations
 
             modelBuilder.Entity("AuthModule.Models.UserToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedBy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("SharedHelpers.Models.GeneralEntity");
 
                     b.Property<string>("Token")
                         .IsRequired()
@@ -266,25 +199,65 @@ namespace AuthModule.Migrations
                     b.Property<int>("User_Id")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
                     b.HasIndex("User_Id");
 
                     b.ToTable("Auth_UserTokens");
                 });
 
+            modelBuilder.Entity("AuthModule.Models.Company", b =>
+                {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.Company", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthModule.Models.Permission", b =>
+                {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.Permission", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthModule.Models.Role", b =>
+                {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.Role", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthModule.Models.User", b =>
+                {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.User", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AuthModule.Models.UserPermission", b =>
                 {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.UserPermission", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AuthModule.Models.Permission", "Permission")
                         .WithMany()
                         .HasForeignKey("Permission_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AuthModule.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Permission");
@@ -294,16 +267,22 @@ namespace AuthModule.Migrations
 
             modelBuilder.Entity("AuthModule.Models.UserRole", b =>
                 {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.UserRole", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AuthModule.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("Role_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AuthModule.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Role");
@@ -313,10 +292,16 @@ namespace AuthModule.Migrations
 
             modelBuilder.Entity("AuthModule.Models.UserToken", b =>
                 {
+                    b.HasOne("SharedHelpers.Models.GeneralEntity", null)
+                        .WithOne()
+                        .HasForeignKey("AuthModule.Models.UserToken", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AuthModule.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");

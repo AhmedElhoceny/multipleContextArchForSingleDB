@@ -12,8 +12,6 @@ namespace AuthModule.Models
     [Table("Auth_Roles")]   
     public class Role:GeneralEntity
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

@@ -1,17 +1,23 @@
 ﻿using AuthModule.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using SharedHelpers.HelperServices;
+using SharedHelpers.Models;
 
 namespace SharedConfilgrations.Context
 {
     public class DBContext: DbContext
     {
-        public DBContext(DbContextOptions<DBContext> options) : base(options){}
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public DBContext(DbContextOptions<DBContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.NoAction;
-            }
+            modelBuilder.Entity<GeneralEntity>()
+                .HasQueryFilter(p => !p.IsDeleted)
+                .HasQueryFilter(x => x.CompId == _httpContextAccessor.HttpContext.GetCompanyId());
         }
 
         #region AuthModule
@@ -21,6 +27,7 @@ namespace SharedConfilgrations.Context
             public DbSet<UserToken> userTokens { get; set; }
             public DbSet<Permission> permissions { get; set; }
             public DbSet<UserPermission> userPermissions { get; set; }
+            public DbSet<Company> companies { get; set; }
         #endregion
     }
 }

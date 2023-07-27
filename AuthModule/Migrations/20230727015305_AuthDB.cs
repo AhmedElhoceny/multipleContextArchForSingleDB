@@ -6,55 +6,96 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AuthModule.Migrations
 {
     /// <inheritdoc />
-    public partial class Build_Auth_DB : Migration
+    public partial class AuthDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Auth_Permissions",
+                name: "GeneralEntity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CompId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeneralEntity", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auth_Companies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auth_Companies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_Companies_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auth_Permissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auth_Permissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_Permissions_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Auth_Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auth_Roles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_Roles_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Auth_Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsEmailConfirmaed = table.Column<bool>(type: "bit", nullable: false),
@@ -62,33 +103,26 @@ namespace AuthModule.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PassWord = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    PassWord = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auth_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_Users_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Auth_UserPermissions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     User_Id = table.Column<int>(type: "int", nullable: false),
-                    Permission_Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Permission_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,12 +131,16 @@ namespace AuthModule.Migrations
                         name: "FK_Auth_UserPermissions_Auth_Permissions_Permission_Id",
                         column: x => x.Permission_Id,
                         principalTable: "Auth_Permissions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Auth_UserPermissions_Auth_Users_User_Id",
                         column: x => x.User_Id,
                         principalTable: "Auth_Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Auth_UserPermissions_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -111,16 +149,9 @@ namespace AuthModule.Migrations
                 name: "Auth_UserRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     User_Id = table.Column<int>(type: "int", nullable: false),
-                    Role_Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Role_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,12 +160,16 @@ namespace AuthModule.Migrations
                         name: "FK_Auth_UserRoles_Auth_Roles_Role_Id",
                         column: x => x.Role_Id,
                         principalTable: "Auth_Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Auth_UserRoles_Auth_Users_User_Id",
                         column: x => x.User_Id,
                         principalTable: "Auth_Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Auth_UserRoles_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -143,16 +178,9 @@ namespace AuthModule.Migrations
                 name: "Auth_UserTokens",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     User_Id = table.Column<int>(type: "int", nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,6 +189,11 @@ namespace AuthModule.Migrations
                         name: "FK_Auth_UserTokens_Auth_Users_User_Id",
                         column: x => x.User_Id,
                         principalTable: "Auth_Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Auth_UserTokens_GeneralEntity_Id",
+                        column: x => x.Id,
+                        principalTable: "GeneralEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -195,6 +228,9 @@ namespace AuthModule.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Auth_Companies");
+
+            migrationBuilder.DropTable(
                 name: "Auth_UserPermissions");
 
             migrationBuilder.DropTable(
@@ -211,6 +247,9 @@ namespace AuthModule.Migrations
 
             migrationBuilder.DropTable(
                 name: "Auth_Users");
+
+            migrationBuilder.DropTable(
+                name: "GeneralEntity");
         }
     }
 }

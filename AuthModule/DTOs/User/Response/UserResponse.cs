@@ -1,12 +1,8 @@
-﻿using SharedHelpers.Models;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AuthModule.Models
+﻿namespace AuthModule.DTOs.User.Response
 {
-    [Table("Auth_Users")]
-    public class User: GeneralEntity
+    public class UserResponse
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public bool IsEmailConfirmaed { get; set; }
@@ -14,7 +10,5 @@ namespace AuthModule.Models
         public string? Address { get; set; }
         public string? NationalId { get; set; }
         public string? ImagePath { get; set; }
-        public string PassWord { get; set; }
-        public string? EmailVerificationCode { get; set; }
     }
 }
