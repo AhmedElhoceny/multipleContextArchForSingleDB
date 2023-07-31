@@ -57,13 +57,6 @@ namespace AuthModule.Context
                     ((GeneralEntity)entityEntry.Entity).CreatedDate = dateNow;
                     ((GeneralEntity)entityEntry.Entity).CreatedBy = userId;
                 }
-                if (entityEntry.State == EntityState.Deleted)
-                {
-                    entityEntry.State = EntityState.Modified;
-                    ((GeneralEntity)entityEntry.Entity).ModifiedDate = dateNow;
-                    ((GeneralEntity)entityEntry.Entity).ModifiedBy = userId;
-                    ((GeneralEntity)entityEntry.Entity).IsDeleted = true;
-                }
             }
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

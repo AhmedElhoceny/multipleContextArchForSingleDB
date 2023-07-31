@@ -17,7 +17,7 @@ namespace AuthModule.Services.Interfaces
         public Task<GeneralResponse<UserResponse>> GetUser(int id);
         public Task<GeneralResponse<List<UserResponse>>> GetUsers();
         public Task<GeneralResponse<UserResponse>> VerifyEmail(string email, string verificationCode);
-        public Task<GeneralResponse<loginResponse>> Login(string email, string password);
+        public Task<GeneralResponse<loginResponse>> Login(string email, string password,int CompanyId);
         public Task<GeneralResponse<UserResponse>> ForgetPassword(string email);
         public Task<GeneralResponse<UserResponse>> ResetPassword(string email, string verificationCode, string newPassword);
     }

@@ -25,14 +25,19 @@ namespace AuthModule.autoMapper
             CreateMap<Company, User>()
             .ForMember(User => User.Name, opt => opt.MapFrom(Company => $"{Company.Name}_Admin"))
             .ForMember(User => User.Email, opt => opt.MapFrom(Company => $"{Company.Name}_Admin@{Company.Name}.com"))
-            .ForMember(User => User.PassWord, opt => opt.MapFrom(Company => "123456"))
+            .ForMember(User => User.PassWord, opt => opt.MapFrom(Company => HashingService.GetHash("123456")))
             .ForMember(User => User.Address, opt => opt.MapFrom(Company => Company.Address))
             .ForMember(User => User.CompId, opt => opt.MapFrom(Company => Company.Id))
             .ForMember(User => User.IsEmailConfirmaed, opt => opt.MapFrom(Company => true))
-            .ForMember(User => User.Phone, opt => opt.MapFrom(Company => Company.Phone));
+            .ForMember(User => User.Phone, opt => opt.MapFrom(Company => Company.Phone))
+            .ForMember(user => user.Id , opt => opt.MapFrom(obj => 0))
+            .ForMember(user => user.EmailVerificationCode , opt => opt.MapFrom(obj => ""));
 
             CreateMap<Company, Role>()
-                .ForMember(Role => Role.Name, opt => opt.MapFrom(Company => $"{Company.Name}_Admin"));
+                .ForMember(Role => Role.Name, opt => opt.MapFrom(Company => $"{Company.Name}_Admin"))
+                .ForMember(Role => Role.CompId, opt => opt.MapFrom(Company => Company.Id))
+                .ForMember(Role => Role.IsActive, opt => opt.MapFrom(Company =>true))
+                .ForMember(Role => Role.Id, opt => opt.MapFrom(Company => 0));
 
             #endregion
 

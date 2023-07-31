@@ -186,18 +186,20 @@ namespace AuthModule.Services.ServicesImps
 
         }
 
-        public async Task<GeneralResponse<loginResponse>> Login(string email, string password)
+        public async Task<GeneralResponse<loginResponse>> Login(string email, string password, int CompanyId)
         {
             try
             {
-                var searchedUser = _authUnitOfWork.UserRepository.GetAll(obj => obj.Email == email).FirstOrDefault();
+                var searchedUser = _authUnitOfWork.UserRepository.GetAll(obj => obj.Email == email && obj.CompId == CompanyId,ignoreQueryFilters:true).FirstOrDefault();
                 if (searchedUser == null)
                     return new GeneralResponse<loginResponse>()
                     {
                         IsSuccess = false,
                         Message = "User Not Found"
                     };
-                if (searchedUser.PassWord != HashingService.GetHash(password))
+                var hashedpassword = HashingService.GetHash(password);
+
+                if (searchedUser.PassWord != hashedpassword)
                     return new GeneralResponse<loginResponse>()
                     {
                         IsSuccess = false,
@@ -209,7 +211,7 @@ namespace AuthModule.Services.ServicesImps
                         IsSuccess = false,
                         Message = "Email is Not Verified"
                     };
-                var userPermissions = (await _authUnitOfWork.UserPermissionRepository.GetSpecificSelectAsync(obj => obj.User_Id == searchedUser.Id, select: obj => obj.Permission.Name)).ToList();
+                var userPermissions = (await _authUnitOfWork.UserPermissionRepository.GetSpecificSelectAsync(obj => obj.User_Id == searchedUser.Id && obj.CompId == CompanyId, ignoreQueryFilters: true, select: obj => obj.Permission.Name)).ToList();
                 var token = TokenServices.GenerateJSONWebToken(new UserTokenInfo() { companyId = (int)searchedUser.CompId, userId = searchedUser.Id, Permissions = userPermissions });
                 return new GeneralResponse<loginResponse>()
                 {

@@ -5,6 +5,7 @@ using AuthModule.Models;
 using AuthModule.Repos.IRepositories;
 using AuthModule.Services.Interfaces;
 using AutoMapper;
+using System.Transactions;
 
 namespace AuthModule.Services.ServicesImps
 {
@@ -94,7 +95,7 @@ namespace AuthModule.Services.ServicesImps
         {
             try
             {
-                var searchedCompany = await _authUnitOfWork.CompanyRepository.GetByIdAsync(id);
+                var searchedCompany = await _authUnitOfWork.CompanyRepository.GetFirstOrDefaultAsync(obj => obj.Id == id , ignoreQueryFilters:true);
                 if (searchedCompany == null)
                 {
                     return new GeneralResponse<CompanyResponse>
@@ -103,8 +104,40 @@ namespace AuthModule.Services.ServicesImps
                         Message = "Company not found"
                     };
                 }
-                await _authUnitOfWork.CompanyRepository.Remove(searchedCompany);
-                await _authUnitOfWork.Complete();
+                using (var transaction = await _authUnitOfWork.BeginTransaction()) {
+
+                    try
+                    {
+                        await _authUnitOfWork.CompanyRepository.Remove(searchedCompany);
+                        await _authUnitOfWork.Complete();
+
+                        var searchedUserRole = await _authUnitOfWork.UserRoleRepository.GetAllAsync(obj => obj.User.CompId == searchedCompany.Id, ignoreQueryFilters: true);
+                        _authUnitOfWork.UserRoleRepository.RemoveRange(searchedUserRole);
+                        _authUnitOfWork.Complete();
+
+                        var searchedUser = await _authUnitOfWork.UserRepository.GetAllAsync(obj => obj.CompId == searchedCompany.Id, ignoreQueryFilters: true);
+                        _authUnitOfWork.UserRepository.RemoveRange(searchedUser);
+                        _authUnitOfWork.Complete();
+
+                        var searchedRole = await _authUnitOfWork.RoleRepository.GetAllAsync(obj => obj.CompId == searchedCompany.Id, ignoreQueryFilters: true);
+                        _authUnitOfWork.RoleRepository.RemoveRange(searchedRole);
+                        _authUnitOfWork.Complete();
+
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return new GeneralResponse<CompanyResponse>
+                        {
+                            IsSuccess = false,
+                            Message = "Something went wrong",
+                            Error = ex
+                        };
+                    }
+                }
+            
+                
                 return new GeneralResponse<CompanyResponse>
                 {
                     IsSuccess = true,
@@ -126,7 +159,7 @@ namespace AuthModule.Services.ServicesImps
         {
             try
             {
-                var data = await _authUnitOfWork.CompanyRepository.GetAllAsync();
+                var data = await _authUnitOfWork.CompanyRepository.GetAllAsync(ignoreQueryFilters:true);
                 var mappedData = _mapper.Map<List<CompanyResponse>>(data);
                 
                 return new GeneralResponse<List<CompanyResponse>>
@@ -152,7 +185,7 @@ namespace AuthModule.Services.ServicesImps
         {
             try
             {
-                var searchedCompany = _authUnitOfWork.CompanyRepository.GetByIdAsync(id);
+                var searchedCompany = await _authUnitOfWork.CompanyRepository.GetFirstOrDefaultAsync(obj => obj.Id == id, ignoreQueryFilters: true);
                 if (searchedCompany == null)
                 {
                     return new GeneralResponse<CompanyResponse>
@@ -185,7 +218,7 @@ namespace AuthModule.Services.ServicesImps
         {
             try
             {
-                var searchedCompany = _authUnitOfWork.CompanyRepository.GetByIdAsync(request.Id);
+                var searchedCompany = await _authUnitOfWork.CompanyRepository.GetFirstOrDefaultAsync(obj => obj.Id == request.Id, ignoreQueryFilters: true);
                 if (searchedCompany == null)
                 {
                     return new GeneralResponse<CompanyResponse>

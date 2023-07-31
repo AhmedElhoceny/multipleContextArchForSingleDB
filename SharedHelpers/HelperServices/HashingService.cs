@@ -7,15 +7,22 @@ namespace SharedHelpers.HelperServices
     {
         public static string GetHash(string inputString)
         {
-            using (HashAlgorithm algorithm = SHA256.Create())
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                byte[] bytes = algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+
+                // Create a StringBuilder to collect the bytes and create a string.
+                StringBuilder sBuilder = new StringBuilder();
+
+                // Loop through each byte of the hashed data and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
                 {
-                    builder.Append(bytes[i].ToString("x2"));
+                    sBuilder.Append(data[i].ToString("x2"));
                 }
-                return builder.ToString();
+
+                // Return the hexadecimal string.
+                return sBuilder.ToString();
             }
         }
         // Function to Generate a random string with a given size

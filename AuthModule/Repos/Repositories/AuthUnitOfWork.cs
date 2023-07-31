@@ -27,6 +27,7 @@ namespace AuthModule.Repos.Repositories
         public IUserPermissionRepository UserPermissionRepository { get; set; }
         public AuthUnitOfWork(AuthContextDB context)
         {
+            _context = context;
             CompanyRepository = new CompanyRepository(context);
             UserRepository = new UserRepository(context);
             RoleRepository = new RoleRepository(context);

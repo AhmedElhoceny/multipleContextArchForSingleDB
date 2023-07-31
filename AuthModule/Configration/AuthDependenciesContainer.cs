@@ -21,9 +21,13 @@ namespace AuthModule.Configration
             services.AddScoped<IAuthDBDesignerService, AuthDBDesignerService>();
             services.AddScoped<IAuthUnitOfWork, AuthUnitOfWork>();
             services.AddMvcCore().AddApplicationPart(typeof(AuthDataBaseDesignerController).Assembly);
+            services.AddMvcCore().AddApplicationPart(typeof(CompanyController).Assembly);
+            services.AddMvcCore().AddApplicationPart(typeof(UserController).Assembly);
 
             #region Services
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPermissionsService, PermissionsService>();
             #endregion
         }
     }
