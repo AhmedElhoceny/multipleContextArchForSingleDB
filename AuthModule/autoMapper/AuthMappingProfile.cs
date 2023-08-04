@@ -31,6 +31,8 @@ namespace AuthModule.autoMapper
             .ForMember(User => User.IsEmailConfirmaed, opt => opt.MapFrom(Company => true))
             .ForMember(User => User.Phone, opt => opt.MapFrom(Company => Company.Phone))
             .ForMember(user => user.Id , opt => opt.MapFrom(obj => 0))
+            .ForMember(user => user.IsSuperAdmin , opt => opt.MapFrom(obj => false))
+            .ForMember(user => user.IsAdmin , opt => opt.MapFrom(obj => true))
             .ForMember(user => user.EmailVerificationCode , opt => opt.MapFrom(obj => ""));
 
             CreateMap<Company, Role>()
@@ -44,6 +46,8 @@ namespace AuthModule.autoMapper
             #region user
             CreateMap<AddUserRequest, User>()
                 .ForMember(User => User.PassWord, opt => opt.MapFrom(obj => HashingService.GetHash(obj.PassWord)))
+                .ForMember(User => User.IsSuperAdmin, opt => opt.MapFrom(obj => false))
+                .ForMember(User => User.IsAdmin, opt => opt.MapFrom(obj => false))
                 .ForMember(User => User.IsEmailConfirmaed, opt => opt.MapFrom(obj => false));
             CreateMap<UpdateUserRequest, User>()
                 .ForMember(User => User.PassWord, opt => opt.MapFrom(obj => HashingService.GetHash(obj.PassWord)));

@@ -23,7 +23,7 @@ namespace AuthModule.Services.ServicesImps
         {
             try
             {
-                if ((await _authUnitOfWork.CompanyRepository.GetAllAsync(obj => obj.Name == request.Name)).Any())
+                if ((await _authUnitOfWork.CompanyRepository.GetAllAsync(obj => obj.Name == request.Name , ignoreQueryFilters:true)).Any())
                 {
                     return new GeneralResponse<CompanyResponse>
                     {

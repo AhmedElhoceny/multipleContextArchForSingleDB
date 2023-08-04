@@ -16,5 +16,7 @@ namespace AuthModule.Models
         public string? ImagePath { get; set; }
         public string PassWord { get; set; }
         public string? EmailVerificationCode { get; set; }
+        public bool IsSuperAdmin { get; set; } = false;
+        public bool IsAdmin { get; set; } = false;
     }
 }
