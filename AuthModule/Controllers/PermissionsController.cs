@@ -27,7 +27,6 @@ namespace AuthModule.Controllers
             if (result.IsSuccess)
                 return Ok(result);
             return BadRequest(result);
-
         }
         [HttpGet("getAllModules")]
         public async Task<IActionResult> GetAllModules()
@@ -36,8 +35,6 @@ namespace AuthModule.Controllers
             if (result.IsSuccess)
                 return Ok(result);
             return BadRequest(result);
-
-
         }
         [HttpPost("addModuleToCompany")]
         public async Task<IActionResult> AddModuleToCompany([FromBody]ModuleCompanyRequest model)
